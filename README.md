@@ -92,27 +92,37 @@ go run ./cmd/api
 
 ---
 
-## ☁️ Deployment to Render.com
+## ☁️ Deployment
 
-This repository includes a `render.yaml` blueprint file for zero-config deployment on Render.
+### 1. Deploy to Vercel (Serverless Go)
+Proyek ini sudah dilengkapi dengan `vercel.json` dan `api/index.go` sehingga dapat langsung di-deploy ke **Vercel**:
 
-### Option 1: Blueprint Deployment (Recommended)
-1. Push your repository to GitHub.
-2. Log in to [Render Dashboard](https://dashboard.render.com/).
-3. Click **New +** -> **Blueprint**.
-4. Connect this repository (`learn-vibe-code`).
-5. Render will automatically provision:
-   - PostgreSQL Database (`ppob-postgres`)
-   - Go Web Service (`learn-vibe-code-api`) with automatic `DATABASE_URL` binding.
-6. Click **Apply**.
+1. Pastikan Anda memiliki database PostgreSQL cloud (misalnya dari **[Neon.tech](https://neon.tech)**, **[Supabase](https://supabase.com)**, atau **Vercel Postgres**).
+2. Install Vercel CLI atau deploy via Dashboard:
+   - **Via Vercel Dashboard**:
+     - Import repository GitHub ini ke Vercel.
+     - Tambahkan **Environment Variables** di project settings:
+       - `DATABASE_URL`: `postgres://user:password@ep-xyz.neon.tech/neondb?sslmode=require`
+       - `APP_ENV`: `production`
+     - Klik **Deploy**.
+   - **Via CLI**:
+     ```bash
+     npm i -g vercel
+     vercel
+     ```
 
-### Option 2: Manual Web Service
-- **Runtime**: Go or Docker
-- **Build Command**: `go build -o bin/api ./cmd/api`
-- **Start Command**: `./bin/api`
-- **Environment Variables**:
-  - `APP_ENV`: `production`
-  - `DATABASE_URL`: (Connection string from your Render PostgreSQL instance)
+---
+
+### 2. Deploy to Render.com
+Repository ini juga menyertakan file blueprint `render.yaml` untuk deploy di Render:
+
+- **Via Blueprint**:
+  1. Buka [Render Dashboard](https://dashboard.render.com/) -> **New +** -> **Blueprint**.
+  2. Pilih repository ini dan klik **Apply**. Render otomatis membuat database dan web service.
+- **Via Manual Web Service**:
+  - Build Command: `go build -o bin/api ./cmd/api`
+  - Start Command: `./bin/api`
+  - Environment Variables: `APP_ENV=production`, `DATABASE_URL=...`
 
 ---
 
