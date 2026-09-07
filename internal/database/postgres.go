@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/nalendro16/learn-vibe-code/internal/config"
+	"github.com/nalendro16/learn-vibe-code/internal/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -36,6 +37,11 @@ func NewPostgresDB(cfg config.DBConfig) (*gorm.DB, error) {
 		return nil, fmt.Errorf("database ping failed: %w", err)
 	}
 
-	slog.Info("Successfully connected to PostgreSQL database", "database", cfg.Name, "host", cfg.Host)
+	// Auto-migrate models
+	if err := db.AutoMigrate(&model.User{}); err != nil {
+		return nil, fmt.Errorf("failed to auto-migrate database schema: %w", err)
+	}
+
+	slog.Info("Successfully connected to PostgreSQL database and migrated schema", "database", cfg.Name, "host", cfg.Host)
 	return db, nil
 }

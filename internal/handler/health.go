@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/nalendro16/learn-vibe-code/internal/dto"
 	"gorm.io/gorm"
 )
 
@@ -27,9 +27,10 @@ func (h *HealthHandler) HealthCheck(c *gin.Context) {
 		dbStatus = "uninitialized"
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"status":    "ok",
+	data := gin.H{
 		"database":  dbStatus,
 		"timestamp": time.Now().UTC().Format(time.RFC3339),
-	})
+	}
+
+	dto.SendOK(c, "Service is healthy", data)
 }
