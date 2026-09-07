@@ -36,7 +36,7 @@ func TestHealthCheck(t *testing.T) {
 		t.Fatalf("failed to parse response JSON: %v", err)
 	}
 
-	if resp["status"] != "ok" {
-		t.Errorf("expected status 'ok', got '%v'", resp["status"])
+	if resp["result"] != "ok" {
+		t.Errorf("expected result 'ok', got '%v'", resp["result"])
 	}
 }
